@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Cart;
+use App\Models\CartItem;
+use App\Models\Product;
+use Illuminate\Http\Request;
+
+class CartController extends Controller
+{
+    public function index()
+    {
+
+        $user_id = auth()->user()->id;
+        $cart = Cart::query()->where('user_id', '=', $user_id)->where('buy', '=', '0')->first();
+        $items = CartItem::query()->where('shop_cart_id', $cart->id)->get();
+
+
+        $total = 0;
+        $outputList = array();
+
+        foreach ($items as $item) {
+
+            $row = array();
+            $pid = $item->product_id;
+            $product = Product::find($pid);
+            $row['id'] = $item->id;
+            $row['name'] = $product->title;
+            $row['image'] = $product->image_link;
+            $row['price'] = $product->price;
+            $row['quantity'] = $item->quantity;
+            $row['total'] = $item->quantity * $product->price;
+            $product->price = $item->quantity * $product->price;
+
+            $outputList[] = $row;
+            $total += $product->price;
+
+        }
+        return view('website.cart', ['total_price' => $total, 'data' => $outputList]);
+    }
+
+    public function clearItem($item)
+    {
+
+    }
+
+    public function addToCart(Request $request)
+    {
+
+        Cart::add($request->id, $request->quantity);
+
+
+        return redirect('/cart');
+
+
+    }
+    public function removeFromCart(Request $request)
+    {
+
+
+        Cart::remove($request->id);
+
+
+        return redirect('/cart');
+
+
+    }
+}
