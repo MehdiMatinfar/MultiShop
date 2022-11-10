@@ -8,7 +8,7 @@ abstract class Repository
 
     protected $model;
 
-
+//dsasd
     public function __construct()
     {
         $this->model = app($this->model());
