@@ -76,27 +76,5 @@ class Cart extends Model
 
     }
 
-    public  static function remove($itemId){
-
-        CartItem::query()->where('id',$itemId)->delete();
-
-    }
-    public static function getTotal()
-    {
-        $user_id = auth()->user()->id;
-        $cart = Cart::query()->where('user_id', '=', $user_id)->where('buy', '=', '0')->first();
-
-        $items = CartItem::query()->where('shop_cart_id', $cart->id)->get();
-
-        $total = 0;
-        foreach ($items as $item) {
-            $total += $item->quantity;
-        }
-
-        if (!is_null($total)) {
-            return $total;
-        }
-        return 0;
-    }
 
 }

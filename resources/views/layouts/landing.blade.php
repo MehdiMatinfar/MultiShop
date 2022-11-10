@@ -113,7 +113,7 @@
 
                             <a href="{{route('website.cart')}}" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-primary"></i>
-                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">{{\App\Models\Cart::getTotal()}}</span>
+                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">{{\App\Repository\CartRepository::getTotal()}}</span>
                             </a>
                         </div>
 

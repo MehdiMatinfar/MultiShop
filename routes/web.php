@@ -28,6 +28,8 @@ Route::get('/checkout', function () {
     return view('website.checkout');
 });
 Route::get('/cart',[\App\Http\Controllers\CartController::class,'index'])->name('website.cart')->middleware('auth');
+Route::get('/getall',[\App\Http\Controllers\CartController::class,'getMeAll']);
+Route::get('/buyOrNot/{id}',[\App\Http\Controllers\CartController::class,'buyOrNot']);
 
 
 Auth::routes();
