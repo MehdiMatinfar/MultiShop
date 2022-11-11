@@ -9,15 +9,24 @@ use App\Notifications\TestNotification;
 use App\Providers\AddPostEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Monolog\Logger;
-
+use Illuminate\Support\Facades\Redis;
 class AdminUserController extends Controller
 {
 
+
+    public function testredis()
+    {
+
+
+         Redis::set('foo','ilami',10);
+        return Redis::get('foo');
+    }
 
     public function update(Request $request)
     {

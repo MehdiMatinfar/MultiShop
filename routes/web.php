@@ -1,10 +1,14 @@
 <?php
 
+use App\Events\SendMessage;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TestQueueEmails;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use BeyondCode\LaravelWebSockets\Apps\AppProvider;
+use BeyondCode\LaravelWebSockets\Dashboard\DashboardLogger;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +28,30 @@ Route::get('/detail/{id}',[App\Http\Controllers\Detailcontroller::class,'index']
 Route::get('/contact', function () {
     return view('website.contact');
 });
+
+
+Route::get('/chat-app', function (AppProvider $appProvider) {
+    return view('chat', [
+        "port" => "6001",
+        "host" => "127.0.0.1",
+        "authEndpoint" => "/api/sockets/connect",
+        "logChannel" => DashboardLogger::LOG_CHANNEL_PREFIX,
+        "apps" => $appProvider->all()
+    ]);
+});
+Route::post("/chat/send", function(Request $request) {
+    $message = $request->input("message", null);
+    $name = $request->input("name", "Anonymous");
+    $time = (new DateTime(now()))->format(DateTime::ATOM);
+    if ($name == null) {
+        $name = "Anonymous";
+    }
+    SendMessage::dispatch($name, $message, $time);
+});
+
+
+
+
 Route::get('/checkout', function () {
     return view('website.checkout');
 });
@@ -50,6 +78,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']],function () {
 Route::get('sending-queue-emails', [App\Http\Controllers\AdminUserController::class, 'testNotification'])->name('sending-queue-emails');
 Route::get('/zarinpal', [App\Http\Controllers\CheckOutController::class, 'test']);
 Route::get('/callback', [App\Http\Controllers\CheckOutController::class, 'callback'])->name('callback');
+Route::get('/test-redis',[App\Http\Controllers\AdminUserController::class,'testredis']);
 
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
