@@ -30,24 +30,8 @@ Route::get('/contact', function () {
 });
 
 
-Route::get('/chat-app', function (AppProvider $appProvider) {
-    return view('chat', [
-        "port" => "6001",
-        "host" => "127.0.0.1",
-        "authEndpoint" => "/api/sockets/connect",
-        "logChannel" => DashboardLogger::LOG_CHANNEL_PREFIX,
-        "apps" => $appProvider->all()
-    ]);
-});
-Route::post("/chat/send", function(Request $request) {
-    $message = $request->input("message", null);
-    $name = $request->input("name", "Anonymous");
-    $time = (new DateTime(now()))->format(DateTime::ATOM);
-    if ($name == null) {
-        $name = "Anonymous";
-    }
-    SendMessage::dispatch($name, $message, $time);
-});
+Route::get('/chat-app',[App\Http\Controllers\SocketController::class,'chat']);
+Route::post("/chat/send",[App\Http\Controllers\SocketController::class,'send']);
 
 
 
