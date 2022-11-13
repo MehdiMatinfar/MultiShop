@@ -43,7 +43,6 @@ class CartController extends Controller
                 $row['quantity'] = $item->quantity;
                 $row['total'] = $item->quantity * $product->price;
                 $product->price = $item->quantity * $product->price;
-
                 $outputList[] = $row;
                 $total += $product->price;
 
