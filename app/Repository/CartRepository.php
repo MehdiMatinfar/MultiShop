@@ -38,15 +38,21 @@ class CartRepository extends Repository
 
     public function remove($itemId)
     {
+        $product = CartItem::query()->where('id', $itemId)->get();
+        $shop_id='';
+        foreach ($product as $p){
+            $shop_id =  $p->shop_cart_id;
+            break;
+        }
 
         CartItem::query()->where('id', $itemId)->delete();
-        $product_id = CartItem::query()->where('id', $itemId)->product_id;
-        $count = CartItem::query()->where('product_id', $product_id)->count();
+        $count = CartItem::query()->where('shop_cart_id', $shop_id)->count();
 
         if ($count == 0) {
 
             app($this->model())->query()->where('user_id', auth()->id())->delete();
         }
+
     }
 
     public static function getTotal()
