@@ -17,4 +17,5 @@ abstract class Repository
     {
         return $this->model->all();
     }
+
 }

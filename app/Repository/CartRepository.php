@@ -18,21 +18,33 @@ class CartRepository extends Repository
 
     public function getBuyOrNot($id)
     {
-        return app($this->model())->where('user_id',$id)->select('id','buy')->get();
+        return app($this->model())->where('user_id', $id)->select('id', 'buy')->get();
     }
 
-    public function shipping($coupon_code){
-
+    public function shipping($coupon_code)
+    {
 
 
     }
 
-    public  function remove($itemId){
+    /**
+     * @return mixed
+     */
+    public function all()
+    {
+        return parent::all();
+    }
 
-        CartItem::query()->where('id',$itemId)->delete();
-        $count = CartItem::query()->where('id',$itemId)->count();
-        if($count==0){
-            app($this->model())->query()->where('user_id',auth()->id())->delete();
+
+    public function remove($itemId)
+    {
+
+        CartItem::query()->where('id', $itemId)->delete();
+        $count = CartItem::query()->where('id', $itemId)->count();
+
+        if ($count == 0) {
+
+            app($this->model())->query()->where('user_id', auth()->id())->delete();
         }
     }
 
@@ -41,7 +53,7 @@ class CartRepository extends Repository
         $user_id = auth()->user()->id;
         $cart = Cart::query()->where('user_id', '=', $user_id)->where('buy', '=', '0')->first();
 
-        if(!is_null($cart)){
+        if (!is_null($cart)) {
 
             $items = CartItem::query()->where('shop_cart_id', $cart->id)->get();
 
@@ -54,7 +66,7 @@ class CartRepository extends Repository
             if (!is_null($total)) {
                 return $total;
             }
-            return  0 ;
+            return 0;
 
         }
 
