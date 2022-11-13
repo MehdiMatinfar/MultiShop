@@ -40,7 +40,8 @@ class CartRepository extends Repository
     {
 
         CartItem::query()->where('id', $itemId)->delete();
-        $count = CartItem::query()->where('id', $itemId)->count();
+        $product_id = CartItem::query()->where('id', $itemId)->product_id;
+        $count = CartItem::query()->where('product_id', $product_id)->count();
 
         if ($count == 0) {
 
