@@ -24,6 +24,9 @@ class SocketController extends Controller
         ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function send(Request $request) {
         $message = $request->input("message", null);
         $name = $request->input("name", "Anonymous");
@@ -36,7 +39,7 @@ class SocketController extends Controller
 
 
     /**
-     * @throws \Pusher\PusherException
+     * @throws PusherException
      */
     public function connect(Request $request)
     {

@@ -8,8 +8,8 @@ return [
      * Set a custom dashboard configuration
      */
     'dashboard' => [
-        'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
-        'host' => env('LARAVEL_WEBSOCKET_HOST'),
+        'port' => env('LARAVEL_WEBSOCKETS_EXTERNAL_PORT', 6001),
+        "host" => env("LARAVEL_WEBSOCKETS_EXTERNAL_HOST", "127.0.0.1")
     ],
 
     /*
@@ -24,14 +24,13 @@ return [
      */
     'apps' => [
         [
-            'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
-            'host' => env('LARAVEL_WEBSOCKET_HOST'),
-            'id' => env('PUSHER_APP_ID'),
-            'name' => env('APP_NAME'),
-            'key' => env('PUSHER_APP_KEY'),
-            'secret' => env('PUSHER_APP_SECRET'),
+            'id' => env('PUSHER_APP_ID', "staging"),
+            'name' => env('APP_NAME',  "staging"),
+            'host' => env('LARAVEL_WEBSOCKETS_EXTERNAL_HOST',  "127.0.0.1"),
+            'port' => env('LARAVEL_WEBSOCKETS_EXTERNAL_PORT', 6001),
+            'key' => env('PUSHER_APP_KEY', "staging"),
+            'secret' => env('PUSHER_APP_SECRET', "staging"),
             'path' => env('PUSHER_APP_PATH'),
-            'capacity' => null,
             'enable_client_messages' => false,
             'enable_statistics' => true,
             'encrypted'=>false
@@ -132,6 +131,8 @@ return [
          * Passphrase for your local_cert file.
          */
         'passphrase' => env('LARAVEL_WEBSOCKETS_SSL_PASSPHRASE', null),
+        "verify_peer" => (env("APP_ENV") === "local" || env("APP_ENV") === "dev") ? false : true,
+        "allow_self_signed" => (env("APP_ENV") === "local" || env("APP_ENV") === "dev") ? true : false
     ],
 
     /*

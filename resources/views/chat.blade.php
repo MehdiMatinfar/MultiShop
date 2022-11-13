@@ -47,7 +47,7 @@
         <div v-if="connected === true" class="card-body">
 
             <div class="col-12 bg-light pt-2 pb-2 mt-3">
-                <p class="p-0 m-0 ps-2 pe-2" v-for="(message, index) in inComingMessages">
+                <p class="p-0 m-0 ps-2 pe-2" v-for="(message, index) in incomingMessages">
                     (@{{ message.time }}) <b>@{{ message.name }}</b>
                     @{{ message.message }}
                 </p>
@@ -88,11 +88,11 @@
 
             pusher: null,
             app: null,
-            apps: {!! json_encode($apps ?? '') !!},
-            logChannel: "{{ $logChannel ?? '' }}",
-            authEndpoint: "{{ $authEndpoint ?? '' }}",
-            host: "{{ $host ?? '' }}",
-            port: "{{ $port ?? '' }}",
+            apps: {!! json_encode($apps) !!},
+            logChannel: "{{ $logChannel }}",
+            authEndpoint: "{{ $authEndpoint }}",
+            host: "{{ $host }}",
+            port: "{{ $port }}",
 
             state: null,
 
